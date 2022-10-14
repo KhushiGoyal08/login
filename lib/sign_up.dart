@@ -1,22 +1,18 @@
-// ignore_for_file: unused_label
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-class MyLogin extends StatefulWidget {
-  const MyLogin({super.key});
+class account extends StatefulWidget {
+  const account({super.key});
 
   @override
-  State<MyLogin> createState() => _MyLoginState();
+  State<account> createState() => _accountState();
 }
 
-class _MyLoginState extends State<MyLogin> {
+class _accountState extends State<account> {
   @override
   Widget build(BuildContext context) {
    
-    return Container(
+return Container(
       // ignore: prefer_const_constructors
       decoration: BoxDecoration(
         image: const DecorationImage(
@@ -32,7 +28,7 @@ class _MyLoginState extends State<MyLogin> {
           toolbarHeight: 100,
           backgroundColor: Colors.transparent,
           title: const Text(
-            'LOGIN',
+            'Create Your Account',
             style: TextStyle(
               fontSize: 50,
               fontWeight: FontWeight.bold,
@@ -55,6 +51,24 @@ class _MyLoginState extends State<MyLogin> {
                   child: Center(
                     child: Column(
                       children: [
+                    
+                        TextField(
+                          decoration: InputDecoration(
+                              fillColor: const Color.fromARGB(255, 102, 171, 192),
+                              filled: true,
+                              hintText: 'Username',
+                              hintStyle: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         TextField(
                           decoration: InputDecoration(
                               fillColor: const Color.fromARGB(255, 102, 171, 192),
@@ -76,7 +90,7 @@ class _MyLoginState extends State<MyLogin> {
                           decoration: InputDecoration(
                               fillColor: const Color.fromARGB(255, 102, 171, 192),
                               filled: true,
-                              hintText: 'Password',
+                              hintText: 'Set Password',
                               hintStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -86,23 +100,26 @@ class _MyLoginState extends State<MyLogin> {
                               )),
                         ),
                       const  SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
-                        TextButton(
-                          onPressed: (){},
-                          style: TextButton.styleFrom(
-                            primary: Colors.amber[50],
-                          ),
-                        child: const Text('Forgot Password ??',
-                         style: TextStyle(
-                          fontSize: 20,
+                        TextField(
                           
-                       )
-                        )
+                          decoration: InputDecoration(
+                              fillColor: const Color.fromARGB(255, 102, 171, 192),
+                              filled: true,
+                              hintText: 'Phone Number',
+                              hintStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
                         ),
-                         const  SizedBox(
-                          height: 30,
+                      const  SizedBox(
+                          height: 50,
                         ),
+                      
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
@@ -113,7 +130,8 @@ class _MyLoginState extends State<MyLogin> {
                           ),
                           onPressed: () {},
                           // ignore: prefer_const_constructors
-                          child: Text('SUBMIT',
+                          child: Text('NEXT  -->',
+                           
                           style : const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -122,6 +140,7 @@ class _MyLoginState extends State<MyLogin> {
                           ),
                           ),
                         ),
+                         
                         // ignore: prefer_const_constructors
                        
                       ],
@@ -137,4 +156,5 @@ class _MyLoginState extends State<MyLogin> {
     );
   }
 }
+
 
