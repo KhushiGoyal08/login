@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:loginapp/forgot.dart';
+import 'package:loginapp/initial.dart';
+import 'package:loginapp/last.dart';
+import 'package:loginapp/sign_up.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
@@ -13,6 +17,7 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  final GlobalKey<_MyLoginState> _formkey = GlobalKey<_MyLoginState>();
   @override
   Widget build(BuildContext context) {
    
@@ -52,7 +57,9 @@ class _MyLoginState extends State<MyLogin> {
                     right: 35,
                     left: 35,
                   ),
-                  child: Center(
+               child:  Form( 
+                    key:_formkey,
+                child: Center(
                     child: Column(
                       children: [
                         TextField(
@@ -89,7 +96,12 @@ class _MyLoginState extends State<MyLogin> {
                           height: 10,
                         ),
                         TextButton(
-                          onPressed: (){},
+                          onPressed: (){
+                             Navigator.push(context, MaterialPageRoute(
+                             builder: (context) => const forgot(),
+                            ),
+                            );
+                          },
                           style: TextButton.styleFrom(
                             primary: Colors.amber[50],
                           ),
@@ -111,7 +123,12 @@ class _MyLoginState extends State<MyLogin> {
                             
                              
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(
+                             builder: (context) => const aflo(),
+                            ),
+                            );
+                          },
                           // ignore: prefer_const_constructors
                           child: Text('SUBMIT',
                           style : const TextStyle(
@@ -125,6 +142,7 @@ class _MyLoginState extends State<MyLogin> {
                         // ignore: prefer_const_constructors
                        
                       ],
+                    ),
                     ),
                   ),
                 ),

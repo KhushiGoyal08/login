@@ -1,5 +1,7 @@
  import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:loginapp/login.dart';
+import 'package:loginapp/sign_up.dart';
 
 class First_route extends StatefulWidget {
   const First_route({super.key});
@@ -51,7 +53,12 @@ class _First_routeState extends State<First_route> {
                             
                              
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(
+                             builder: (context) => const MyLogin(),
+                            ),
+                            );
+                          },
                           // ignore: prefer_const_constructors
                           child: Text('Login',
                           style : const TextStyle(
@@ -74,7 +81,12 @@ class _First_routeState extends State<First_route> {
                             
                              
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(
+                             builder: (context) => const account(),
+                            ),
+                            );
+                          },
                           // ignore: prefer_const_constructors
                           child: Text('Sign  Up',
                           style : const TextStyle(
