@@ -1,7 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:ui';
+import 'package:loginapp/verify.dart';
+
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loginapp/login.dart';
-import 'package:loginapp/sign_up.dart';
+
 
 
 class account extends StatefulWidget {
@@ -13,22 +20,79 @@ class account extends StatefulWidget {
 
 // ignore: camel_case_types
 class _accountState extends State<account> {
-  final GlobalKey<_accountState> _formkey = GlobalKey<_accountState>();
-  TextEditingController password = TextEditingController();
-  TextEditingController username = TextEditingController();
-  TextEditingController phone = TextEditingController();
-   TextEditingController email = TextEditingController();
+  final  _formkey = GlobalKey<FormState>();
+
+  var emaily ="";
+  var passwordy ="";
+  var con ="";
+  var user ="";
+
+
+  final password = TextEditingController();
+  final username = TextEditingController();
+  final confirm = TextEditingController();
+   final email = TextEditingController();
+   final _auth= FirebaseAuth.instance;
 
 @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    username.addListener(() {
-      final String text = username.text.toLowerCase();
-    
-    });
+ void dispose(){
+  //clean the controller when the widget is disposed
+  email.dispose();
+  password.dispose();
+  confirm.dispose();
+  username.dispose();
+  super.dispose();
+ }
+  registration() async{ 
+         if(passwordy==con)
+          {
+          try{
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emaily, password: passwordy);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.orange,
+            content: Text("Registeration Successfull,Please Log in",
+                    style:  TextStyle(fontSize: 20.0),
+          ),
+          ),
+
+        );
+        Navigator.pushReplacement(context , MaterialPageRoute(builder: ((context) => const verify()),),);
+      }
+      on FirebaseAuthException catch(e){
+         if(e.code == 'email-already-in-use'){
+           ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("Account Already Exists",
+                    style:  TextStyle(fontSize: 18.0,
+                    color: Colors.black,
+                    ),
+          ),
+          ),
+
+        );
+
+        }
+      } 
+    }  else{
+      
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("Password and Confirm Password doesn't match",
+                    style:  TextStyle(fontSize: 16.0,
+                   color: Colors.black,
+                   ),
+          ),
+          ),
+
+        );
+      } 
   }
 
+ 
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,6 +150,7 @@ class _accountState extends State<account> {
                               } else
                                 return null;
                             },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               fillColor:
                                   const Color.fromARGB(255, 102, 171, 192),
@@ -108,12 +173,18 @@ class _accountState extends State<account> {
                           TextFormField(
                             controller: email,
                             validator: ((txt) {
-                        
-                              if(txt!.isEmpty||RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}').hasMatch(txt)){
-                            return "Enter correct email";
+                              var nonNullValue=txt??'';
+                            if(nonNullValue.isEmpty){
+                              return "Enter Email";
+
+                            }
+                             else if(RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}').hasMatch(nonNullValue)){
+                             
+                             return null;
                               }
                               else {
-                                return null;
+                                return "Enter valid email";
+                               
                               }
                             }),
                             keyboardType: TextInputType.emailAddress,
@@ -140,6 +211,7 @@ class _accountState extends State<account> {
                               obscureText: true,
                               controller: password,
                               // errorText
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
 
                               decoration: InputDecoration(
                                   fillColor:
@@ -156,7 +228,7 @@ class _accountState extends State<account> {
                               validator: (txt) {
                                
                                 if (txt == null || txt.isEmpty) {
-                                  return "Invalid password!";
+                                  return "Password Required";
                                 }
                                 if (txt.length < 8) {
                                   return "Password must has 8 characters";
@@ -174,27 +246,47 @@ class _accountState extends State<account> {
                                   return "Password must has special characters";
                                 } else
                                   return null;
-                              }),
+                              }
+                              ),
+
+                            
+                          
                           const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
-                            controller: phone,
+                            controller: confirm,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator:((txt) {
-                              if(txt!.isEmpty || RegExp(r'^[+]*[()]{0,1}[0-9]{1-4}+$').hasMatch(txt)){
-                                return"Enter Correct phone number";
-                              }
-                              else{
-                                return null;
-                              }
+                               if (txt == null || txt.isEmpty) {
+                                  return "Password Required";
+                                }
+                                if (txt.length < 8) {
+                                  return "Password must has 8 characters";
+                                }
+                                if (!txt.contains(RegExp(r'[A-Z]'))) {
+                                  return "Password must has uppercase";
+                                }
+                                if (!txt.contains(RegExp(r'[0-9]'))) {
+                                  return "Password must has digits";
+                                }
+                                if (!txt.contains(RegExp(r'[a-z]'))) {
+                                  return "Password must has lowercase";
+                                }
+                                if (!txt.contains(RegExp(r'[#?!@$%^&*-]'))) {
+                                  return "Password must has special characters";
+                                } else
+                                  return null;
+                              
                               
                             }),
-                            keyboardType: TextInputType.number,
+                            obscureText: true,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                                 fillColor:
                                     const Color.fromARGB(255, 102, 171, 192),
                                 filled: true,
-                                hintText: 'Phone Number',
+                                hintText: 'Confirm Password',
                                 hintStyle: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
@@ -217,16 +309,20 @@ class _accountState extends State<account> {
                             ),
 
                             onPressed: () {
-                            if( _formkey.currentState!.validate()){
-                             
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyLogin(),
-                                ),
-                             );
-                            }
-                         },
+                           if(_formkey.currentState!.validate()){
+                            setState(() {
+                              emaily =email.text;
+                              passwordy = password.text;
+                              user= username.text;
+                              con= confirm.text;
+                            });
+                          
+                            registration();        
+                                  
+                           }
+                            
+                         }, 
+                          
 
                             // ignore: prefer_const_constructors
                             child: const Text(
@@ -252,28 +348,8 @@ class _accountState extends State<account> {
     );
   }
   
- validate() {
-     validator: (txt) {
-                               
-                                if (txt == null || txt.isEmpty) {
-                                  return "Invalid password!";
-                                }
-                                if (txt.length < 8) {
-                                  return "Password must has 8 characters";
-                                }
-                                if (!txt.contains(RegExp(r'[A-Z]'))) {
-                                  return "Password must has uppercase";
-                                }
-                                if (!txt.contains(RegExp(r'[0-9]'))) {
-                                  return "Password must has digits";
-                                }
-                                if (!txt.contains(RegExp(r'[a-z]'))) {
-                                  return "Password must has lowercase";
-                                }
-                                if (!txt.contains(RegExp(r'[#?!@$%^&*-]'))) {
-                                  return "Password must has special characters";
-                                } else
-                                  return null;
-                              };
-  }
+
 }
+
+ 
+  

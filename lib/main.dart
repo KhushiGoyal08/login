@@ -6,10 +6,11 @@ import 'package:loginapp/login.dart';
 import 'package:loginapp/sign_up.dart';
 import 'package:loginapp/forgot.dart';
 import 'package:loginapp/last.dart';
+import 'package:loginapp/verify.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
+Future<void> main() async {
  WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
@@ -24,6 +25,7 @@ void main() async {
         'sign_up': ((context) => const account()),
         'forgot': ((context) => const forgot()),
         'last': ((context) => const aflo()),
+        'verify':(context) => const verify(),
       },
     ),
   );

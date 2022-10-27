@@ -1,5 +1,6 @@
 // ignore_for_file: unused_label
-
+import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -11,14 +12,90 @@ import 'package:loginapp/sign_up.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({super.key});
-
+ 
   @override
   State<MyLogin> createState() => _MyLoginState();
 }
 
 class _MyLoginState extends State<MyLogin> {
-  final GlobalKey<_MyLoginState> _formkey = GlobalKey<_MyLoginState>();
+  final  _erkey = GlobalKey<FormState>();
+ var em="";
+  var pas="";
+   final    email = TextEditingController();
+  final    password = TextEditingController();
+  final _auth = FirebaseAuth.instance;
   @override
+  void dispose(){
+  //clean the controller when the widget is disposed
+  email.dispose();
+  password.dispose();
+}
+ 
+loginstate() async{ 
+         
+          try{
+            
+        await FirebaseAuth.instance.signInWithEmailAndPassword(email: em, password: pas);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.orange,
+            content: Text("Welcome",
+                    style:  TextStyle(fontSize: 20.0),
+          ),
+          ),
+
+        );
+        
+        Navigator.pushReplacement(context , MaterialPageRoute(builder: ((context) => const aflo()),),);
+      
+          }
+         
+      on FirebaseAuthException catch(e){
+         if(e.code == 'user-not-found'){
+           ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("No Such User Exists",
+                    style:  TextStyle(fontSize: 18.0,
+                    color: Colors.black,
+                    ),
+          ),
+          ),
+
+        );
+
+    }  else if(e.code== 'wrong-password'){
+      
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("Wrong Password,Enter Again",
+                    style:  TextStyle(fontSize: 16.0,
+                   color: Colors.black,
+                   ),
+          ),
+          ),
+
+        );
+      } 
+      else if(e.code=='email-not-verified'){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("First Verify your Email",
+                    style:  TextStyle(fontSize: 16.0,
+                   color: Colors.black,
+                   ),
+          ),
+          ),
+
+        );
+      }
+        }
+       
+  }
+
+@override
   Widget build(BuildContext context) {
    
     return Container(
@@ -58,11 +135,33 @@ class _MyLoginState extends State<MyLogin> {
                     left: 35,
                   ),
                child:  Form( 
-                    key:_formkey,
+                    key:_erkey,
                 child: Center(
                     child: Column(
                       children: [
-                        TextField(
+                   TextFormField(
+                          controller: email,
+                          keyboardType: TextInputType.emailAddress,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (txt) {
+                              var nonNullValue=txt??'';
+                            if(nonNullValue.isEmpty){
+                              return "Enter Email";
+
+                            }
+                             else if(RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}').hasMatch(nonNullValue)){
+                             
+                             return null;
+                              }
+                              else {
+                                return "Enter valid email";
+                               
+                              }
+                             },
+                         
+                             
+
+                          
                           decoration: InputDecoration(
                               fillColor: const Color.fromARGB(255, 102, 171, 192),
                               filled: true,
@@ -74,12 +173,17 @@ class _MyLoginState extends State<MyLogin> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
+                              
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        TextField(
+                       TextFormField(
                           obscureText: true,
+                          keyboardType: TextInputType.text,
+                          autofocus: false,
+                          controller: password,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: InputDecoration(
                               fillColor: const Color.fromARGB(255, 102, 171, 192),
                               filled: true,
@@ -91,6 +195,29 @@ class _MyLoginState extends State<MyLogin> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
+                              validator: (txt) {
+                               
+                                if (txt == null || txt.isEmpty) {
+                                  return "Required Password";
+                                }
+                                if (txt.length < 8) {
+                                  return "Password must has 8 characters";
+                                }
+                                if (!txt.contains(RegExp(r'[A-Z]'))) {
+                                  return "Password must has uppercase";
+                                }
+                                if (!txt.contains(RegExp(r'[0-9]'))) {
+                                  return "Password must has digits";
+                                }
+                                if (!txt.contains(RegExp(r'[a-z]'))) {
+                                  return "Password must has lowercase";
+                                }
+                                if (!txt.contains(RegExp(r'[#?!@$%^&*-]'))) {
+                                  return "Password must has special characters";
+                                } else
+                                  return null;
+                              },
+                          
                         ),
                       const  SizedBox(
                           height: 10,
@@ -116,6 +243,7 @@ class _MyLoginState extends State<MyLogin> {
                           height: 30,
                         ),
                       ElevatedButton(
+                        
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
                             onPrimary: Colors.white,
@@ -124,10 +252,14 @@ class _MyLoginState extends State<MyLogin> {
                              
                           ),
                           onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(
-                             builder: (context) => const aflo(),
-                            ),
-                            );
+                           if( _erkey.currentState!.validate()){
+                              setState(() { 
+                                em=email.text;
+                                pas=password.text;
+                              });
+                            
+                           loginstate();
+                           }
                           },
                           // ignore: prefer_const_constructors
                           child: Text('SUBMIT',

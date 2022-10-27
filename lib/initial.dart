@@ -13,95 +13,115 @@ class First_route extends StatefulWidget {
 class _First_routeState extends State<First_route> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-    backgroundColor: Colors.lightBlue[900],
-    body: Column(
-      
-        // ignore: prefer_const_literals_to_create_immutables
-        children:<Widget> [
-          const Padding(
-            padding: EdgeInsets.only(
-              top: 200,
-              right: 20,
-            ),
-            ),
+    return  Container(
+        decoration: const BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('images/robook.jpg'),
+        ),
+      ),
+      child: Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        
+          // ignore: prefer_const_literals_to_create_immutables
+          children:<Widget> [
+            const Padding(
+              padding: EdgeInsets.only(
+                top: 100,
+                right: 20,
+              ),
+              ),
 
-           const Text('Hey There,',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 40,
-            color: Colors.white,
-          )
-    ),
-    const Text('Let\'s Begin Our  Journey',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 40,
-            color: Colors.white,
+             const Text('Hey There,',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 40,
+              color: Colors.white,
+            )
+      ),
+      const SizedBox(
+          height: 20,
+      ),
+      Container(
+     padding: const EdgeInsets.only(
+      right: 20,
+      left: 40,
+     ),
+       child: 
+          const Text('Let\'s Begin Our Journey',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
+                  color: Colors.white,
+                ),
           ),
-    ),
-    const SizedBox(
-                          height: 60,
-                        ),
-                        
-    
-     ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            onPrimary: Colors.white,
-                            padding: const EdgeInsets.fromLTRB(20,20,20,20),
-                            
-                             
+        
+
+     ),
+      const SizedBox(
+                            height: 60,
                           ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                             builder: (context) => const MyLogin(),
+                          
+      
+       ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              onPrimary: Colors.white,
+                              padding: const EdgeInsets.fromLTRB(20,20,20,20),
+                              
+                               
                             ),
-                            );
-                          },
-                          // ignore: prefer_const_constructors
-                          child: Text('Login',
-                          style : const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(
+                               builder: (context) => const MyLogin(),
+                              ),
+                              );
+                            },
+                            // ignore: prefer_const_constructors
+                            child: Text('Login',
+                            style : const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
 
 
-                          ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        
-                         ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            onPrimary: Colors.white,
-                            padding: const EdgeInsets.fromLTRB(20,20,20,20),
-                            
-                             
-                          ),
-                          onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(
-                             builder: (context) => const account(),
                             ),
-                            );
-                          },
-                          // ignore: prefer_const_constructors
-                          child: Text('Sign  Up',
-                          style : const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          
+                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              onPrimary: Colors.white,
+                              padding: const EdgeInsets.fromLTRB(20,20,20,20),
+                              
+                               
+                            ),
+                            onPressed: () {
+                               Navigator.push(context, MaterialPageRoute(
+                               builder: (context) => const account(),
+                              ),
+                              );
+                            },
+                            // ignore: prefer_const_constructors
+                            child: Text('Sign  Up',
+                            style : const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
 
 
+                            ),
+                            ),
                           ),
-                          ),
-                        ),
-        ],
-    ),
-    // ignore: prefer_const_constructors
-    
-     
+          ],
+      ),
+      // ignore: prefer_const_constructors
+      
+       
+      ),
     );
   }
 }
