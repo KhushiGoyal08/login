@@ -66,8 +66,8 @@ class _verifyState extends State<verify> {
               children:  [
              ElevatedButton(
                style: ElevatedButton.styleFrom(
-                                primary: Colors.red,
-                                onPrimary: Colors.white,
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
                                 padding: const EdgeInsets.fromLTRB(20,20,20,20),
                                 
                                  

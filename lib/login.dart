@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:loginapp/forgot.dart';
 import 'package:loginapp/initial.dart';
 import 'package:loginapp/last.dart';
@@ -24,18 +25,21 @@ class _MyLoginState extends State<MyLogin> {
    final    email = TextEditingController();
   final    password = TextEditingController();
   final _auth = FirebaseAuth.instance;
+  final storage = FlutterSecureStorage();
   @override
   void dispose(){
   //clean the controller when the widget is disposed
   email.dispose();
   password.dispose();
+  super.dispose();
 }
  
 loginstate() async{ 
          
           try{
-            
-        await FirebaseAuth.instance.signInWithEmailAndPassword(email: em, password: pas);
+           
+ UserCredential userCredential=  await FirebaseAuth.instance.signInWithEmailAndPassword(email: em, password: pas);
+ await storage.write(key: "uid", value: userCredential.user?.uid);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Colors.orange,
@@ -45,9 +49,9 @@ loginstate() async{
           ),
 
         );
-        
+        if(UserCredential!=null){
         Navigator.pushReplacement(context , MaterialPageRoute(builder: ((context) => const aflo()),),);
-      
+        }
           }
          
       on FirebaseAuthException catch(e){
@@ -245,8 +249,8 @@ loginstate() async{
                       ElevatedButton(
                         
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            onPrimary: Colors.white,
+                            backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
                             padding: const EdgeInsets.fromLTRB(20,20,20,20),
                             
                              

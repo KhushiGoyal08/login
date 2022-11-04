@@ -302,8 +302,8 @@ class _accountState extends State<account> {
 
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              onPrimary: Colors.white,
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
                               padding:
                                   const EdgeInsets.fromLTRB(20, 20, 20, 20),
                             ),
